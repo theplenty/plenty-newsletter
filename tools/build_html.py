@@ -245,13 +245,18 @@ def feature(no, title, desc):
 
 def features():
     left = feature("01", "초대형 LED 연출", "13m &times; 4.5m 초고화질 미디어월") + feature("02", "단독 대관", "한 홀 전체를 단독으로 사용") + feature("03", "올인원 행사 운영", "대관 &middot; 식사 &middot; 운영 통합 제공")
-    right = feature("04", "다양한 테이블 세팅", "행사 목적에 따른 공간 구성") + feature("05", "넉넉한 주차 환경", "주차 공간 200대 보유") + feature("06", "멀티 로비 공간", "리셉션 &middot; 부스 설치 가능")
+    right = feature("04", "다양한 테이블 세팅", "행사 목적에 따른 공간 구성") + feature("05", "넉넉한 주차 환경", '주차 최대 200대 가능<span style="color:%s;">*</span>' % GOLD_L) + feature("06", "멀티 로비 공간", "리셉션 &middot; 부스 설치 가능")
     return (
         heading("{EB_WHY}", "준비가 가벼워지는 여섯 가지", G, ON_G)
         + hybrid_row([cell(left), cell(right)], 288, G, 34, 0)
         + """
           <tr>
-            <td class="px" align="center" bgcolor="{G}" style="padding:16px 44px 60px 44px; background-color:{G};">
+            <td class="px" align="center" bgcolor="{G}" style="padding:2px 44px 0 44px; background-color:{G};">
+              <p class="ko" style="margin:0; font-family:{KO}; font-size:12px; line-height:20px; color:{ON_G_SOFT};"><span style="color:{GOLD_L};">*</span> 당일 현장 상황에 따라 주차 공간이 제한될 수 있습니다.</p>
+            </td>
+          </tr>
+          <tr>
+            <td class="px" align="center" bgcolor="{G}" style="padding:26px 44px 60px 44px; background-color:{G};">
               """ + text_link("공간 운영 안내 자세히 보기", L_SPACE, GOLD_L) + """
             </td>
           </tr>"""
@@ -269,7 +274,7 @@ def dining_item(name, alt, en, ko):
 
 def dining():
     items = [
-        dining_item("dining-chinese.jpg", "중식 런치박스", "Chinese Lunch Box", "중식 런치박스"),
+        dining_item("dining-course.jpg", "양식 코스 요리", "Western Course", "양식 코스"),
         dining_item("dining-korean.jpg", "한식 런치박스", "Korean Lunch Box", "한식 런치박스"),
     ]
     return (

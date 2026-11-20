@@ -163,11 +163,14 @@ def build_photos():
                                ("image7.jpeg", "story-kams.jpg"), ("image9.jpeg", "story-dhp.jpg")):
         im = cover(Image.open(os.path.join(MEDIA, src_name)).convert("RGB"), 576, 432)
         save_jpg(grade(im), out_name)
-    for src_name, out_name in (("lunchbox-chinese.jpg", "dining-chinese.jpg"), ("lunchbox-korean.jpg", "dining-korean.jpg")):
-        im = Image.open(os.path.join(FOOD, src_name)).convert("RGB")
-        im = im.crop((632, 0, im.width, im.height))    # the photograph, without the menu card
-        im = cover(im, 576, 432, cx=0.47)
-        save_jpg(grade(im, 1.04, 1.0, 1.0), out_name, 88)
+    # course meal: a plain photograph, framed on the plates
+    im = Image.open(os.path.join(FOOD, "course-western.jpg")).convert("RGB")
+    im = im.crop((296, 74, 1800, 1202))                # tighter on the plates, same 4:3
+    save_jpg(grade(cover(im, 576, 432), 1.04, 1.0, 1.0), "dining-course.jpg", 88)
+    # lunch box: drop the menu card on the left of the source sheet
+    im = Image.open(os.path.join(FOOD, "lunchbox-korean.jpg")).convert("RGB")
+    im = im.crop((632, 0, im.width, im.height))
+    save_jpg(grade(cover(im, 576, 432, cx=0.47), 1.04, 1.0, 1.0), "dining-korean.jpg", 88)
 
 
 # ── 4) video thumbnail: crop away the player chrome, add a quiet play mark ─
