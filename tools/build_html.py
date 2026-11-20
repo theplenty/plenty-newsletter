@@ -150,7 +150,7 @@ def top_strip():
             <td class="px" bgcolor="{IVORY}" style="padding:15px 44px 13px 44px; background-color:{IVORY};">
               {T} width="100%"><tr>
                 <td align="left" class="en" style="font-family:{EN}; font-size:12px; line-height:18px; letter-spacing:3px; font-weight:600; color:{G};">NEWSLETTER</td>
-                <td align="right" class="en" style="font-family:{EN}; font-size:12px; line-height:18px; letter-spacing:3px; font-weight:600; color:{GOLD};">NOVEMBER 2026</td>
+                <td align="right" class="en" style="font-family:{EN}; font-size:12px; line-height:18px; letter-spacing:3px; font-weight:600; color:{GOLD};">DECEMBER 2026</td>
               </tr></table>
             </td>
           </tr>"""
@@ -231,32 +231,39 @@ def space():
     )
 
 
-def feature(no, title, desc):
+NOTE_H = 22   # height one note line adds to a feature (2px margin + 20px line)
+
+
+def feature(no, title, desc, note="", match_note=False):
+    """One numbered feature. `note` adds a small line under the description;
+    `match_note` pads the neighbour in the other column so the two-column rows stay level
+    (the media query takes that padding away again once the columns stack)."""
+    note_html = ""
+    if note:
+        note_html = '<p class="ko" style="margin:2px 0 0 0; font-family:%s; font-size:12px; line-height:20px; color:%s;">%s</p>' % (KO, ON_G_SOFT, note)
+    pad = 24 + (NOTE_H if match_note else 0)
+    cls = ' class="f-sp"' if match_note else ""
     return (
-        '%s width="100%%"><tr><td style="border-top:1px solid %s; padding:20px 0 24px 0;">'
+        '%s width="100%%"><tr><td%s style="border-top:1px solid %s; padding:20px 0 %dpx 0;">'
         '%s width="100%%"><tr>'
         '<td valign="top" width="46" class="en" style="width:46px; font-family:%s; font-size:25px; line-height:26px; font-style:italic; font-weight:500; color:%s;">%s</td>'
         '<td valign="top">'
         '<p class="ko" style="margin:0; font-family:%s; font-size:16px; line-height:26px; font-weight:700; color:%s;">%s</p>'
         '<p class="ko" style="margin:3px 0 0 0; font-family:%s; font-size:13px; line-height:22px; color:%s;">%s</p>'
-        "</td></tr></table></td></tr></table>" % (T, G_LINE, T, EN, GOLD_L, no, KO, ON_G, title, KO, ON_G_SOFT, desc)
+        "%s</td></tr></table></td></tr></table>" % (T, cls, G_LINE, pad, T, EN, GOLD_L, no, KO, ON_G, title, KO, ON_G_SOFT, desc, note_html)
     )
 
 
 def features():
-    left = feature("01", "초대형 LED 연출", "13m &times; 4.5m 초고화질 미디어월") + feature("02", "단독 대관", "한 홀 전체를 단독으로 사용") + feature("03", "올인원 행사 운영", "대관 &middot; 식사 &middot; 운영 통합 제공")
-    right = feature("04", "다양한 테이블 세팅", "행사 목적에 따른 공간 구성") + feature("05", "넉넉한 주차 환경", '주차 최대 200대 가능<span style="color:%s;">*</span>' % GOLD_L) + feature("06", "멀티 로비 공간", "리셉션 &middot; 부스 설치 가능")
+    star = '<span style="color:%s;">*</span>' % GOLD_L
+    left = feature("01", "초대형 LED 연출", "13m &times; 4.5m 초고화질 미디어월") + feature("02", "단독 대관", "한 홀 전체를 단독으로 사용", match_note=True) + feature("03", "올인원 행사 운영", "대관 &middot; 식사 &middot; 운영 통합 제공")
+    right = feature("04", "다양한 테이블 세팅", "행사 목적에 따른 공간 구성") + feature("05", "넉넉한 주차 환경", "주차 최대 200대 가능", note=star + " 당일 상황에 따라 제한될 수 있습니다.") + feature("06", "멀티 로비 공간", "리셉션 &middot; 부스 설치 가능")
     return (
         heading("{EB_WHY}", "준비가 가벼워지는 여섯 가지", G, ON_G)
         + hybrid_row([cell(left), cell(right)], 288, G, 34, 0)
         + """
           <tr>
-            <td class="px" align="center" bgcolor="{G}" style="padding:2px 44px 0 44px; background-color:{G};">
-              <p class="ko" style="margin:0; font-family:{KO}; font-size:12px; line-height:20px; color:{ON_G_SOFT};"><span style="color:{GOLD_L};">*</span> 당일 현장 상황에 따라 주차 공간이 제한될 수 있습니다.</p>
-            </td>
-          </tr>
-          <tr>
-            <td class="px" align="center" bgcolor="{G}" style="padding:26px 44px 60px 44px; background-color:{G};">
+            <td class="px" align="center" bgcolor="{G}" style="padding:16px 44px 60px 44px; background-color:{G};">
               """ + text_link("공간 운영 안내 자세히 보기", L_SPACE, GOLD_L) + """
             </td>
           </tr>"""
@@ -484,6 +491,7 @@ HEAD = """<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http:/
       .px-s { padding-left: 12px !important; padding-right: 12px !important; }
       .card { padding-left: 18px !important; padding-right: 18px !important; }
       .colx { max-width: 100% !important; }
+      .f-sp { padding-bottom: 24px !important; }
       .fluid { width: 100% !important; max-width: 100% !important; height: auto !important; }
       .h1 { font-size: 28px !important; line-height: 42px !important; }
       .h2 { font-size: 22px !important; line-height: 34px !important; }
